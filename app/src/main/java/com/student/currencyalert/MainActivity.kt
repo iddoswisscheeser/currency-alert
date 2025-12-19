@@ -106,22 +106,58 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
 
 @Composable
 fun RateItem(currency: String, rate: Double) {
+    var cadAmount by remember { mutableStateOf("") }
+    var krwAmount by remember { mutableStateOf("") }
+    
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = "1 CAD",
-                style = MaterialTheme.typography.titleMedium
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "1 CAD",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = String.format("%.2f KRW", rate),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+            
+            Divider()
+            
+            OutlinedTextField(
+                value = cadAmount,
+                onValueChange = { 
+                    cadAmount = it
+                    krwAmount = it.toDoubleOrNull()?.let { cad -> 
+                        String.format("%.2f", cad * rate)
+                    } ?: ""
+                },
+                label = { Text("CAD Amount") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
-            Text(
-                text = String.format("%.2f KRW", rate),
-                style = MaterialTheme.typography.bodyLarge
+            
+            OutlinedTextField(
+                value = krwAmount,
+                onValueChange = { 
+                    krwAmount = it
+                    cadAmount = it.toDoubleOrNull()?.let { krw -> 
+                        String.format("%.2f", krw / rate)
+                    } ?: ""
+                },
+                label = { Text("KRW Amount") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
         }
     }

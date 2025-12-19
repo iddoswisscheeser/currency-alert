@@ -12,18 +12,12 @@ class PreferencesHelper @Inject constructor(
 ) {
     private val prefs: SharedPreferences = context.getSharedPreferences("currency_settings", Context.MODE_PRIVATE)
     
-    fun getStartTime(): String = prefs.getString("start_time", "09:00") ?: "09:00"
-    
-    fun getEndTime(): String = prefs.getString("end_time", "17:00") ?: "17:00"
+    fun getCadence(): Int = prefs.getInt("cadence_hours", 1)
     
     fun getNotificationsEnabled(): Boolean = prefs.getBoolean("notifications_enabled", true)
     
-    fun saveStartTime(time: String) {
-        prefs.edit().putString("start_time", time).apply()
-    }
-    
-    fun saveEndTime(time: String) {
-        prefs.edit().putString("end_time", time).apply()
+    fun saveCadence(hours: Int) {
+        prefs.edit().putInt("cadence_hours", hours).apply()
     }
     
     fun saveNotificationsEnabled(enabled: Boolean) {

@@ -1,6 +1,6 @@
 package com.student.currencyalert.di
 
-import com.student.currencyalert.data.api.ExchangeRateService
+import com.student.currencyalert.data.api.CurrencyApiService
 import com.student.currencyalert.data.api.FrankfurterService
 import dagger.Module
 import dagger.Provides
@@ -25,8 +25,8 @@ object NetworkModule {
     
     @Provides
     @Singleton
-    fun provideExchangeRateService(@Named("currency") retrofit: Retrofit): ExchangeRateService =
-        retrofit.create(ExchangeRateService::class.java)
+    fun provideCurrencyApiService(@Named("currency") retrofit: Retrofit): CurrencyApiService =
+        retrofit.create(CurrencyApiService::class.java)
     
     @Provides
     @Singleton

@@ -24,19 +24,14 @@ class SettingsViewModel @Inject constructor(
     private fun loadSettings() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
-                startTime = preferencesHelper.getStartTime(),
-                endTime = preferencesHelper.getEndTime(),
+                cadenceHours = preferencesHelper.getCadence(),
                 notificationsEnabled = preferencesHelper.getNotificationsEnabled()
             )
         }
     }
     
-    fun showStartTimePicker() {
-        // Time picker logic would go here
-    }
-    
-    fun showEndTimePicker() {
-        // Time picker logic would go here
+    fun setCadence(hours: Int) {
+        _uiState.value = _uiState.value.copy(cadenceHours = hours)
     }
     
     fun toggleNotifications(enabled: Boolean) {
@@ -46,15 +41,13 @@ class SettingsViewModel @Inject constructor(
     fun saveSettings() {
         viewModelScope.launch {
             val state = _uiState.value
-            preferencesHelper.saveStartTime(state.startTime)
-            preferencesHelper.saveEndTime(state.endTime)
+            preferencesHelper.saveCadence(state.cadenceHours)
             preferencesHelper.saveNotificationsEnabled(state.notificationsEnabled)
         }
     }
 }
 
 data class SettingsUiState(
-    val startTime: String = "09:00",
-    val endTime: String = "17:00",
+    val cadenceHours: Int = 1,
     val notificationsEnabled: Boolean = true
 )

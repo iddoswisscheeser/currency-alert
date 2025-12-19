@@ -5,9 +5,10 @@ Android application for monitoring CAD to KRW exchange rates with configurable a
 ## Features
 
 - **Real-time Exchange Rates**: Live CAD to KRW conversion rates
+- **Currency Converter**: Interactive text fields to convert between CAD and KRW amounts
 - **Historical Charts**: View exchange rate trends with configurable time windows (1 day, 1 week, 1 month, 1 year, 5 years)
 - **Background Monitoring**: Periodic rate checks via WorkManager
-- **Push Notifications**: Alerts for rate changes during configured time windows
+- **Push Notifications**: Alerts for rate changes during configured time windows with enable/disable toggle
 - **Configurable Settings**: Set notification time windows and preferences
 - **Offline Support**: Local database caching with Room
 
@@ -27,8 +28,7 @@ Android application for monitoring CAD to KRW exchange rates with configurable a
 - **Material Design 3**: Modern UI components
 
 ### APIs
-- **CurrencyAPI.net**: Real-time exchange rates (frequent updates)
-- **FrankfurterAPI**: Historical exchange rate data
+- **FrankfurterAPI**: Both real-time and historical exchange rate data (no API key required)
 
 ## Project Structure
 
@@ -36,8 +36,7 @@ Android application for monitoring CAD to KRW exchange rates with configurable a
 app/src/main/java/com/student/currencyalert/
 ├── data/
 │   ├── api/
-│   │   ├── ExchangeRateService.kt      # CurrencyAPI.net integration
-│   │   └── FrankfurterService.kt       # Historical data API
+│   │   └── FrankfurterService.kt          # API integration (current + historical)
 │   ├── database/
 │   │   ├── CurrencyDatabase.kt         # Room database
 │   │   ├── dao/
@@ -78,16 +77,7 @@ app/src/main/java/com/student/currencyalert/
 
 ### API Keys
 
-1. **CurrencyAPI.net**
-   - Sign up at https://currencyapi.net
-   - Get your API key
-   - Add to `local.properties`:
-     ```
-     API_KEY=your_currencyapi_key
-     ```
-
-2. **FrankfurterAPI**
-   - No API key required (free public API)
+**No API key required!** The app uses FrankfurterAPI which is a free, open-source API with no authentication needed.
 
 ### Build Configuration
 
@@ -102,22 +92,25 @@ kotlin.daemon.jvmargs=-Xmx2048m --add-opens=jdk.compiler/com.sun.tools.javac.mai
 ### Installation
 
 1. Clone the repository
-2. Add API key to `local.properties`
-3. Open project in Android Studio
-4. Sync Gradle
-5. Run on emulator or device (API 26+)
+2. Open project in Android Studio
+3. Sync Gradle
+4. Run on emulator or device (API 26+)
 
 ## Usage
 
 ### Main Screen
 - Displays current CAD to KRW exchange rate
+- Interactive currency converter with text fields:
+  - Enter CAD amount to see KRW equivalent
+  - Enter KRW amount to see CAD equivalent
+  - Real-time bidirectional conversion
 - Pull to refresh for latest rate
 - Settings icon (top-right) for notification configuration
 - Chart icon (top-right) for historical data
 
 ### Settings Screen
+- Enable/disable push notifications toggle
 - Configure notification start/end times
-- Enable/disable notifications
 - Save preferences
 
 ### History Screen
@@ -133,8 +126,10 @@ kotlin.daemon.jvmargs=-Xmx2048m --add-opens=jdk.compiler/com.sun.tools.javac.mai
 ## Key Implementation Details
 
 ### API Integration
-- **Current Rates**: CurrencyAPI.net with query parameter authentication
-- **Historical Data**: FrankfurterAPI with date range queries
+- **Single API Provider**: FrankfurterAPI for all exchange rate data
+- **Current Rates**: `/v1/latest?base=CAD&symbols=KRW`
+- **Historical Data**: `/v1/{start_date}..{end_date}?base=CAD&symbols=KRW`
+- **No Authentication**: Free public API, no key management required
 - Error handling with Result type for safe error propagation
 
 ### Database

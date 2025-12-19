@@ -28,16 +28,16 @@ class MainViewModel @Inject constructor(
     private fun loadRates() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            repository.getExchangeRates("CAD").fold(
-                onSuccess = { rates ->
-                    val krwRate = rates["KRW"]
+            repository.getExchangeRates().fold(
+                onSuccess = { rate ->
                     _uiState.value = _uiState.value.copy(
-                        rates = if (krwRate != null) mapOf("KRW" to krwRate) else null,
+                        rates = mapOf("KRW" to rate),
                         isLoading = false
                     )
                 },
                 onFailure = { error ->
                     _uiState.value = _uiState.value.copy(
+                        rates = null,
                         error = error.message,
                         isLoading = false
                     )

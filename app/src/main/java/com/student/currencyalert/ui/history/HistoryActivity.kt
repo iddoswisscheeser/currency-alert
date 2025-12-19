@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -42,13 +44,24 @@ enum class TimeWindow(val label: String, val days: Int) {
 fun HistoryScreen(viewModel: HistoryViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var selectedWindow by remember { mutableStateOf(TimeWindow.ONE_WEEK) }
+    val context = androidx.compose.ui.platform.LocalContext.current
     
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        TopAppBar(title = { Text("Exchange Rate History") })
+        TopAppBar(
+            title = { Text("Exchange Rate History") },
+            navigationIcon = {
+                IconButton(onClick = { (context as? ComponentActivity)?.finish() }) {
+                    Icon(
+                        imageVector = androidx.compose.material.icons.Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        )
         
         // Time window selector
         Row(

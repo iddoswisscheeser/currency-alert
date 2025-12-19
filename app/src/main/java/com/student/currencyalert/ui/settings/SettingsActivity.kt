@@ -42,37 +42,6 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = "Notification Schedule",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Start Time")
-                    TextButton(
-                        onClick = { viewModel.showStartTimePicker() }
-                    ) {
-                        Text(uiState.startTime)
-                    }
-                }
-                
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("End Time")
-                    TextButton(
-                        onClick = { viewModel.showEndTimePicker() }
-                    ) {
-                        Text(uiState.endTime)
-                    }
-                }
-                
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -84,6 +53,27 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         onCheckedChange = { viewModel.toggleNotifications(it) }
                     )
                 }
+                
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
+                
+                Text(
+                    text = "Check Frequency",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                
+                OutlinedTextField(
+                    value = uiState.cadenceHours.toString(),
+                    onValueChange = { 
+                        it.toIntOrNull()?.let { hours ->
+                            if (hours in 1..24) {
+                                viewModel.setCadence(hours)
+                            }
+                        }
+                    },
+                    label = { Text("Hours (1-24)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
             }
         }
         
