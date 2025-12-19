@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,6 +30,7 @@ class SettingsActivity : ComponentActivity() {
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = androidx.compose.ui.platform.LocalContext.current
     
     Column(
         modifier = Modifier
@@ -35,7 +38,17 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        TopAppBar(title = { Text("Settings") })
+        TopAppBar(
+            title = { Text("Settings") },
+            navigationIcon = {
+                IconButton(onClick = { (context as? ComponentActivity)?.finish() }) {
+                    Icon(
+                        imageVector = androidx.compose.material.icons.Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        )
         
         Card {
             Column(
