@@ -17,18 +17,20 @@ object NetworkModule {
     
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+    @Named("currency")
+    fun provideCurrencyRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("https://currencyapi.net/api/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     
     @Provides
     @Singleton
-    fun provideExchangeRateService(retrofit: Retrofit): ExchangeRateService =
+    fun provideExchangeRateService(@Named("currency") retrofit: Retrofit): ExchangeRateService =
         retrofit.create(ExchangeRateService::class.java)
     
     @Provides
     @Singleton
+    @Named("frankfurter")
     fun provideFrankfurterRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("https://api.frankfurter.dev/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -38,12 +40,4 @@ object NetworkModule {
     @Singleton
     fun provideFrankfurterService(@Named("frankfurter") retrofit: Retrofit): FrankfurterService =
         retrofit.create(FrankfurterService::class.java)
-    
-    @Provides
-    @Singleton
-    @Named("frankfurter")
-    fun provideFrankfurterRetrofitNamed(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.frankfurter.dev/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 }

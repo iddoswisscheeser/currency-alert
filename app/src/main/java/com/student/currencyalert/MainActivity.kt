@@ -6,6 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShowChart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -46,7 +49,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     )
                 }) {
                     Icon(
-                        imageVector = androidx.compose.material.icons.Icons.Default.ShowChart,
+                        imageVector = Icons.Filled.ShowChart,
                         contentDescription = "History"
                     )
                 }
@@ -56,7 +59,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     )
                 }) {
                     Icon(
-                        imageVector = androidx.compose.material.icons.Icons.Default.Settings,
+                        imageVector = Icons.Filled.Settings,
                         contentDescription = "Settings"
                     )
                 }
