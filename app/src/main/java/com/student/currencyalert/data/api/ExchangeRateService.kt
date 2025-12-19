@@ -1,0 +1,15 @@
+package com.student.currencyalert.data.api
+
+import com.student.currencyalert.data.model.ExchangeRateResponse
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface ExchangeRateService {
+    @GET("v1/rates")
+    suspend fun getExchangeRates(
+        @Query("key") apiKey: String,
+        @Query("base") baseCurrency: String,
+        @Query("output") output: String = "json"
+    ): Response<ExchangeRateResponse>
+}
