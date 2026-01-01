@@ -14,4 +14,15 @@ interface ExchangeRateDao {
     
     @Query("DELETE FROM exchange_rates")
     suspend fun clearAll()
+    
+    @Query("""
+        SELECT * FROM exchange_rates 
+        WHERE currencyPair = :currencyPair 
+        AND timestamp >= :startTime 
+        ORDER BY timestamp ASC
+    """)
+    suspend fun getRatesInPeriod(currencyPair: String, startTime: Long): List<ExchangeRateEntity>
+    
+    @Query("SELECT * FROM exchange_rates WHERE currencyPair = :currencyPair ORDER BY timestamp DESC LIMIT 1")
+    fun getLatestRate(currencyPair: String): Flow<ExchangeRateEntity?>
 }

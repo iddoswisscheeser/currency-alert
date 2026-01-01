@@ -9,7 +9,7 @@ import com.student.currencyalert.data.database.entity.ExchangeRateEntity
 
 @Database(
     entities = [ExchangeRateEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class CurrencyDatabase : RoomDatabase() {

@@ -23,4 +23,25 @@ class PreferencesHelper @Inject constructor(
     fun saveNotificationsEnabled(enabled: Boolean) {
         prefs.edit().putBoolean("notifications_enabled", enabled).apply()
     }
+    
+    fun getStartTime(): String = prefs.getString("start_time", "09:00") ?: "09:00"
+    
+    fun getEndTime(): String = prefs.getString("end_time", "21:00") ?: "21:00"
+    
+    fun saveStartTime(time: String) {
+        prefs.edit().putString("start_time", time).apply()
+    }
+    
+    fun saveEndTime(time: String) {
+        prefs.edit().putString("end_time", time).apply()
+    }
+    
+    fun getPreviousRate(): Double? {
+        val rate = prefs.getFloat("previous_rate", -1f)
+        return if (rate == -1f) null else rate.toDouble()
+    }
+    
+    fun savePreviousRate(rate: Double) {
+        prefs.edit().putFloat("previous_rate", rate.toFloat()).apply()
+    }
 }

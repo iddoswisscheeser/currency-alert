@@ -1,18 +1,30 @@
 package com.student.currencyalert
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.student.currencyalert.utils.NotificationHelper
+import com.student.currencyalert.workers.RateFetchWorker
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class CurrencyAlertApplication : Application() {
+class CurrencyAlertApplication : Application(), Configuration.Provider {
     
     @Inject
     lateinit var notificationHelper: NotificationHelper
     
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+    
     override fun onCreate() {
         super.onCreate()
         notificationHelper.createNotificationChannel(this)
+        RateFetchWorker.scheduleWork(this)
     }
+    
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
 }
